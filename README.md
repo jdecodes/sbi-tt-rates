@@ -24,7 +24,6 @@ thin, cached wrapper around that repo's published CSVs).
 pip install sbi-tt-rates
 ```
 
-```markdown
 [![PyPI version](https://img.shields.io/pypi/v/sbi-tt-rates.svg)](https://pypi.org/project/sbi-tt-rates/)
 
 ## Usage
