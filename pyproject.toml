@@ -4,24 +4,50 @@ build-backend = "hatchling.build"
 
 [project]
 name = "sbi-tt-rates"
-version = "0.1.0"
-description = "Unofficial lookup for historical SBI TT buy/sell forex rates, with nearest-prior-date fallback. Not affiliated with SBI. Data may be inaccurate, use at your own risk."
+version = "0.1.1"
+description = "sbi-tt-rates is a lightweight, dependency-free Python library for retrieving historical SBI Telegraphic Transfer (TT) buy and sell forex rates. It automatically falls back to the nearest previous published trading day when an exact date is unavailable, making it useful for income tax calculations, foreign asset reporting, accounting, and financial analysis. Not affiliated with SBI. Data may be inaccurate, use at your own risk."
 readme = "README.md"
+dependencies = []
 license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.9"
 authors = [
     { name = "jdecodes", email = "jaideep_sharma@live.com" }
 ]
-keywords = ["sbi", "forex", "tt-rate", "inr", "exchange-rate"]
-classifiers = [
-    "Development Status :: 3 - Alpha",
-    "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3",
+
+keywords = [
+    "sbi",
+    "forex",
+    "exchange-rate",
+    "telegraphic-transfer",
+    "historical-rates",
+    "currency",
+    "inr",
+    "india",
+    "finance",
+    "tax"
 ]
 
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Topic :: Office/Business :: Financial",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
 [project.urls]
 Homepage = "https://github.com/jdecodes/sbi-tt-rates"
+Repository = "https://github.com/jdecodes/sbi-tt-rates"
+Issues = "https://github.com/jdecodes/sbi-tt-rates/issues"
+Changelog = "https://github.com/jdecodes/sbi-tt-rates/releases"
+Documentation = "https://github.com/jdecodes/sbi-tt-rates"
 "Data Source" = "https://github.com/sahilgupta/sbi-fx-ratekeeper"
 
 [project.optional-dependencies]
