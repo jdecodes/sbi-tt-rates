@@ -1,13 +1,13 @@
 # sbi-tt-rates
 
-Lookup historical SBI TT (Telegraphic Transfer) buy/sell forex rates, with
+Lookup historical SBI TT rates, with
 automatic fallback to the nearest prior trading day when a date has no
 published rate (weekends, holidays, no-publish days).
 
-> **⚠️ Disclaimer:** This is an **unofficial, community-maintained** package.
+> ** Disclaimer:** This is an **unofficial, community-maintained** package.
 > It is **not affiliated with, endorsed by, or sourced directly from the
 > State Bank of India**. Data is pulled from a third-party open-source
-> archive (see below), which itself scrapes publicly published SBI rate
+> archive (see below), which itself scrapes publicly published SBI tt rate
 > sheets, it is **not a live or guaranteed-accurate feed**. Rates may be
 > missing, delayed, or wrong due to upstream parsing errors or gaps.
 > **Use at your own risk.** Always cross-check against an official SBI
@@ -24,7 +24,7 @@ thin, cached wrapper around that repo's published CSVs).
 pip install sbi-tt-rates
 ```
 
-[![PyPI version](https://img.shields.io/pypi/v/sbi-tt-rates.svg)](https://pypi.org/project/sbi-tt-rates/)
+Python Package : [![PyPI version](https://img.shields.io/pypi/v/sbi-tt-rates.svg)](https://pypi.org/project/sbi-tt-rates/)
 
 ## Usage
 
