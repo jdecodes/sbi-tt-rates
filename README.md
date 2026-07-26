@@ -49,9 +49,16 @@ inr_value = 10_000 * result.rate
 ## Currencies
 
 AED AUD BDT BHD CAD CHF CNY DKK EUR GBP HKD IDR JPY KES KRW KWD LKR MYR NOK NZD OMR PKR QAR RUB SAR SEK SGD THB TRY USD ZAR
-SBI_REFERENCE_RATES_<Currency> on 
+SBI_REFERENCE_RATES_<Currency> on below GitHub repo.
+
+## Credits
+
 https://github.com/sahilgupta/sbi-fx-ratekeeper
 
 ## License
 
 MIT
+
+## Contribution 
+
+Feel free to raise a PR, open a issue.
