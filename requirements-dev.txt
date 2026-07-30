@@ -1,0 +1,7 @@
+#-r requirements.txt
+
+pytest>=8.0
+ruff>=0.12
+
+build>=1.2
+twine>=6.0

@@ -11,27 +11,18 @@ feed. Rates may be missing, delayed, or wrong. Use at your own risk. Always
 cross-check against an official SBI source before relying on this for tax
 filings, compliance, or any financial decision.
 """
+
 from __future__ import annotations
 
 import csv
 import json
 import re
-import urllib.request
 import urllib.error
-import warnings
+import urllib.request
 from bisect import bisect_right
 from dataclasses import dataclass
-from datetime import date, datetime
+from datetime import date
 from pathlib import Path
-
-warnings.warn(
-    "sbi_tt_rates is an UNOFFICIAL, community-maintained package, not "
-    "affiliated with SBI. Data may be inaccurate or incomplete. "
-    "Use at your own risk — verify against an official source before "
-    "relying on this for tax or financial decisions.",
-    UserWarning,
-    stacklevel=2,
-)
 
 CSV_URL_TEMPLATE = (
     "https://raw.githubusercontent.com/sahilgupta/sbi-fx-ratekeeper/"
@@ -41,12 +32,41 @@ CSV_URL_TEMPLATE = (
 # Currencies confirmed available upstream (sahilgupta/sbi-fx-ratekeeper).
 # This is a static list maintained alongside upstream, not fetched
 # dynamically - keep it in sync if the upstream repo adds/drops currencies.
-SUPPORTED_CURRENCIES = frozenset({
-    "AED", "AUD", "BDT", "BHD", "CAD", "CHF", "CNY", "DKK", "EUR", "GBP",
-    "HKD", "IDR", "JPY", "KES", "KRW", "KWD", "LKR", "MYR", "NOK", "NZD",
-    "OMR", "PKR", "QAR", "RUB", "SAR", "SEK", "SGD", "THB", "TRY", "USD",
-    "ZAR",
-})
+SUPPORTED_CURRENCIES = frozenset(
+    {
+        "AED",
+        "AUD",
+        "BDT",
+        "BHD",
+        "CAD",
+        "CHF",
+        "CNY",
+        "DKK",
+        "EUR",
+        "GBP",
+        "HKD",
+        "IDR",
+        "JPY",
+        "KES",
+        "KRW",
+        "KWD",
+        "LKR",
+        "MYR",
+        "NOK",
+        "NZD",
+        "OMR",
+        "PKR",
+        "QAR",
+        "RUB",
+        "SAR",
+        "SEK",
+        "SGD",
+        "THB",
+        "TRY",
+        "USD",
+        "ZAR",
+    }
+)
 
 CACHE_DIR = Path.home() / ".cache" / "sbi_tt_rates"
 
@@ -71,16 +91,13 @@ def _parse_date_input(value: str | date) -> date:
 
     if not _DATE_RE.match(value):
         raise ValueError(
-            f"Invalid date format: {value!r}. Expected 'YYYY-MM-DD' "
-            f"(e.g. '2020-01-07')."
+            f"Invalid date format: {value!r}. Expected 'YYYY-MM-DD' (e.g. '2020-01-07')."
         )
 
     try:
-        return datetime.strptime(value, "%Y-%m-%d").date()
+        return date.fromisoformat(value)
     except ValueError as e:
-        raise ValueError(
-            f"Invalid date: {value!r} is not a real calendar date."
-        ) from e
+        raise ValueError(f"Invalid date: {value!r} is not a real calendar date.") from e
 
 
 @dataclass(frozen=True)
@@ -120,13 +137,10 @@ def _download_csv(currency: str) -> str:
             return resp.read().decode()
     except urllib.error.HTTPError as e:
         raise ValueError(
-            f"No data file found for currency '{currency}' "
-            f"(HTTP {e.code} from upstream repo)"
+            f"No data file found for currency '{currency}' (HTTP {e.code} from upstream repo)"
         ) from e
     except urllib.error.URLError as e:
-        raise ConnectionError(
-            f"Could not reach upstream data source ({url}): {e.reason}"
-        ) from e
+        raise ConnectionError(f"Could not reach upstream data source ({url}): {e.reason}") from e
 
 
 def _parse_csv(raw_text: str) -> list[dict]:
@@ -140,7 +154,7 @@ def _parse_csv(raw_text: str) -> list[dict]:
             continue
         if tt_buy == 0.0 or tt_sell == 0.0:
             continue  # known dirty rows in early upstream data
-        d = datetime.strptime(r["DATE"].split()[0], "%Y-%m-%d").date()
+        d = date.fromisoformat(r["DATE"].split()[0])
         parsed.append({"date": d.isoformat(), "tt_buy": tt_buy, "tt_sell": tt_sell})
     parsed.sort(key=lambda r: r["date"])
     return parsed
@@ -175,10 +189,7 @@ def fetch_rates(
         except json.JSONDecodeError:
             cached = None  # corrupt cache file -> treat as no cache
 
-    cache_covers_request = (
-        cached
-        and (needed_date is None or needed_date <= cached[-1]["date"])
-    )
+    cache_covers_request = cached and (needed_date is None or needed_date <= cached[-1]["date"])
 
     if not force_refresh and cache_covers_request:
         return cached
@@ -210,7 +221,7 @@ def get_rate(
     target_str = target.isoformat()
 
     rates = fetch_rates(currency, needed_date=target_str)
-    dates = [datetime.strptime(r["date"], "%Y-%m-%d").date() for r in rates]
+    dates = [date.fromisoformat(r["date"]) for r in rates]
 
     idx = bisect_right(dates, target) - 1
     if idx < 0:
@@ -219,8 +230,8 @@ def get_rate(
         raise ValueError(
             f"No data available for {ccy_display} on or before {target_str}. "
             f"Earliest available date is {earliest}."
-            if earliest else
-            f"No data available for {ccy_display} at all."
+            if earliest
+            else f"No data available for {ccy_display} at all."
         )
 
     match = rates[idx]

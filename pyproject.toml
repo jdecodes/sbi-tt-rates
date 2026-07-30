@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "sbi-tt-rates"
-version = "0.1.1"
+version = "0.1.2"
 description = "sbi-tt-rates is a lightweight, dependency-free Python library for retrieving historical SBI Telegraphic Transfer (TT) buy and sell forex rates. It automatically falls back to the nearest previous published trading day when an exact date is unavailable, making it useful for income tax calculations, foreign asset reporting, accounting, and financial analysis. Not affiliated with SBI. Data may be inaccurate, use at your own risk."
 readme = "README.md"
 dependencies = []
@@ -19,13 +19,14 @@ keywords = [
     "sbi",
     "forex",
     "exchange-rate",
+    "currency",
     "telegraphic-transfer",
     "historical-rates",
-    "currency",
-    "inr",
     "india",
     "finance",
-    "tax"
+    "tax",
+    "inr",
+    "sbi-tt-rate"
 ]
 
 classifiers = [
@@ -42,6 +43,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]
+
 [project.urls]
 Homepage = "https://github.com/jdecodes/sbi-tt-rates"
 Repository = "https://github.com/jdecodes/sbi-tt-rates"
@@ -51,9 +53,24 @@ Documentation = "https://github.com/jdecodes/sbi-tt-rates"
 "Data Source" = "https://github.com/sahilgupta/sbi-fx-ratekeeper"
 
 [project.optional-dependencies]
-dev = ["pytest"]
+dev = [
+    "pytest",
+    "ruff",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sbi_tt_rates"]
 
 [tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
 markers = [
     "network: tests that make real network calls (deselect with '-m \"not network\"')",
 ]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
